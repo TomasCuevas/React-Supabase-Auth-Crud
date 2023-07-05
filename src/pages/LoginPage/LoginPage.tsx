@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 
 //* SUPABASE CLIENT *//
-import { client } from "../../supabase";
+import { supabase } from "../../supabase";
 
 //* COMPONENTS *//
 import { Button, Input } from "../../components";
@@ -11,7 +11,7 @@ export const LoginPage: React.FC = () => {
     initialValues: { email: "" },
     onSubmit: async ({ email }) => {
       try {
-        const result = await client.auth.signInWithOtp({ email });
+        const result = await supabase.auth.signInWithOtp({ email });
         console.log(result);
       } catch (error) {
         console.error(error);
