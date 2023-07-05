@@ -2,7 +2,7 @@
 import { supabase } from "../../supabase";
 
 //* COMPONENT *//
-import { Button, TaskForm } from "../../components";
+import { Button, TaskForm, TaskList } from "../../components";
 
 export const HomePage: React.FC = () => {
   return (
@@ -18,6 +18,7 @@ export const HomePage: React.FC = () => {
       <div className="flex w-full justify-center">
         <div className="max-w-[600px] w-full">
           <TaskForm />
+          <TaskList />
         </div>
       </div>
     </div>

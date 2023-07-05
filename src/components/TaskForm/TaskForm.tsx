@@ -27,7 +27,10 @@ export const TaskForm: React.FC = () => {
   });
 
   return (
-    <form onSubmit={formik.handleSubmit} className="w-full flex flex-col gap-2">
+    <form
+      onSubmit={formik.handleSubmit}
+      className="w-full flex flex-col gap-2 p-2 border rounded-lg border-white/50"
+    >
       <Input
         name="task"
         onChange={formik.handleChange}
