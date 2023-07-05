@@ -1,12 +1,19 @@
 import { useEffect } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
+import { useStore } from "zustand";
+
+//* SUPABASE CLIENT *//
+import { supabase } from "./supabase";
 
 //* PAGES *//
 import { HomePage, LoginPage, NotFound } from "./pages";
-import { supabase } from "./supabase";
+
+//* STORE *//
+import { useTaskStore } from "./store";
 
 export const App: React.FC = () => {
   const navigate = useNavigate();
+  const { name } = useStore(useTaskStore);
 
   useEffect(() => {
     supabase.auth.onAuthStateChange((event, session) => {
