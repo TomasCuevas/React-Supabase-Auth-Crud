@@ -20,7 +20,7 @@ export const LoginPage: React.FC = () => {
   });
 
   return (
-    <div className="w-full h-screen justify-center flex bg-gray-900 px-[5%] py-10">
+    <div className="w-full flex justify-center">
       <form
         className="max-w-[600px] w-full flex flex-col gap-2 "
         onSubmit={formik.handleSubmit}
