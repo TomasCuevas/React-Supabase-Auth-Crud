@@ -1,25 +1,22 @@
+import { useStore } from "zustand";
 import { useFormik } from "formik";
 
-//* SUPABASE CLIENT *//
-import { supabase } from "../../supabase";
-
 //* COMPONENTS *//
-import { Button, Input } from "../";
+import { Button, Input, Loader } from "../";
+
+//* STORE *//
+import { useTaskStore } from "../../store";
 
 export const TaskForm: React.FC = () => {
+  const { createTask } = useStore(useTaskStore);
+
   const formik = useFormik({
     initialValues: { task: "" },
     onSubmit: async (formValues) => {
       try {
-        const {
-          data: { user },
-        } = await supabase.auth.getUser();
-
-        const result = await supabase
-          .from("tasks")
-          .insert({ name: formValues.task, userId: user?.id });
-
+        const result = await createTask(formValues.task);
         console.log(result);
+        formik.resetForm();
       } catch (error) {
         console.error(error);
       }
@@ -38,7 +35,13 @@ export const TaskForm: React.FC = () => {
         type="text"
         value={formik.values.task}
       />
-      <Button type="submit" text="Crear tarea" />
+      <Button
+        type="submit"
+        text="Crear tarea"
+        loading={formik.isSubmitting}
+        loader={Loader}
+        isDisabled={formik.isSubmitting}
+      />
     </form>
   );
 };
