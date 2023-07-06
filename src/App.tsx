@@ -21,7 +21,7 @@ export const App: React.FC = () => {
   }, []);
 
   return (
-    <main className="w-full min-h-screen bg-gray-900 px-[5%] py-3">
+    <main className="w-full min-h-screen bg-gray-900 px-[5%] py-8">
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />

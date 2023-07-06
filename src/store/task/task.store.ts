@@ -8,8 +8,10 @@ import { ITask } from "../../intefaces";
 
 interface TaskState {
   tasks: ITask[];
+  done: boolean;
   isLoadingTasks: boolean;
-  getTasks(done?: boolean): Promise<void>;
+  toggleDone(value: boolean): void;
+  getTasks(): Promise<void>;
   createTask(taskName: string): Promise<ITask[]>;
   updateTask(taskId: number, updateField: Partial<ITask>): Promise<ITask[]>;
   deleteTask(taskId: number): Promise<ITask[]>;
@@ -17,31 +19,39 @@ interface TaskState {
 
 export const useTaskStore = create<TaskState>((set, get) => ({
   tasks: [],
-  isLoadingTasks: true,
+  done: false,
+  isLoadingTasks: false,
+
+  toggleDone(value) {
+    set(() => ({ done: value }));
+  },
 
   //! GET TASKS
-  async getTasks(done) {
+  async getTasks() {
+    const { done } = get();
+
     set(() => ({ isLoadingTasks: true }));
 
     const {
       data: { user },
     } = await supabase.auth.getUser();
 
-    const { error, data } = await supabase
+    const { data } = await supabase
       .from("tasks")
       .select()
       .eq("userId", user?.id)
       .eq("done", done)
-      .order("id", { ascending: true });
+      .order("id", { ascending: true })
+      .select();
 
-    if (error) throw error;
-
-    set(() => ({ tasks: data, isLoadingTasks: false }));
+    if (data) {
+      set(() => ({ tasks: data, isLoadingTasks: false }));
+    }
   },
 
   //! CREATE TASK
   async createTask(taskName) {
-    const { tasks, getTasks } = get();
+    const { getTasks } = get();
 
     const {
       data: { user },
@@ -54,7 +64,7 @@ export const useTaskStore = create<TaskState>((set, get) => ({
 
     if (error) throw error;
 
-    set(() => ({ tasks: [...tasks, ...data] }));
+    set((state) => ({ tasks: [...state.tasks, ...data] }));
     getTasks();
 
     return data;

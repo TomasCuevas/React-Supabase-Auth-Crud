@@ -2,7 +2,7 @@ import { useStore } from "zustand";
 import { useFormik } from "formik";
 
 //* COMPONENTS *//
-import { Button, Input, Loader } from "../";
+import { Button, Input } from "../";
 
 //* STORE *//
 import { useTaskStore } from "../../store";
@@ -38,8 +38,7 @@ export const TaskForm: React.FC = () => {
       <Button.Blue
         type="submit"
         text="Crear tarea"
-        loading={formik.isSubmitting}
-        loader={Loader}
+        isLoading={formik.isSubmitting}
         isDisabled={formik.isSubmitting}
       />
     </form>
