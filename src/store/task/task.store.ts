@@ -20,7 +20,7 @@ export const useTaskStore = create<TaskState>((set, get) => ({
   isLoadingTasks: true,
 
   //! GET TASKS
-  async getTasks(done = false) {
+  async getTasks(done) {
     set(() => ({ isLoadingTasks: true }));
 
     const {

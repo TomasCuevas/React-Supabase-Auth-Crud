@@ -35,7 +35,7 @@ export const LoginPage: React.FC = () => {
             value={formik.values.email}
           />
         </label>
-        <Button text="Enviar" type="submit" />
+        <Button.Blue text="Enviar" type="submit" />
       </form>
     </div>
   );

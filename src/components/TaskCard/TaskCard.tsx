@@ -21,12 +21,17 @@ export const TaskCard: React.FC<Props> = ({ task }) => {
 
   return (
     <li>
-      <div className="text-white flex gap-5 items-center">
-        <span>{task.name}</span>
-        {JSON.stringify(task.done)}
-        <div className="flex  gap-2">
+      <div className="text-white gap-5 p-4 border flex flex-col rounded-lg bg-gray-800 border-gray-500">
+        <h3 className="text-xl font-medium tracking-[0.5px]">{task.name}</h3>
+        <div className="flex gap-2 ml-auto items-center">
+          {!task.done && (
+            <Button.Green
+              text="Completar"
+              type="button"
+              onClick={handleToggle}
+            />
+          )}
           <Button.Red text="Eliminar" type="button" onClick={handleDelete} />
-          <Button.Green text="Completar" type="button" onClick={handleToggle} />
         </div>
       </div>
     </li>
