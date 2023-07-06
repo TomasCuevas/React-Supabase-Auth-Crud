@@ -9,8 +9,9 @@ import { ITask } from "../../intefaces";
 interface TaskState {
   tasks: ITask[];
   isLoadingTasks: boolean;
-  getTasks(done?: boolean): void;
-  createTask(taskName: string): void;
+  getTasks(done?: boolean): Promise<void>;
+  createTask(taskName: string): Promise<ITask[]>;
+  deleteTask(taskId: number): Promise<ITask[]>;
 }
 
 export const useTaskStore = create<TaskState>((set, get) => ({
@@ -33,6 +34,7 @@ export const useTaskStore = create<TaskState>((set, get) => ({
       .order("id", { ascending: true });
 
     if (error) throw error;
+
     set(() => ({ tasks: data, isLoadingTasks: false }));
   },
 
@@ -52,6 +54,30 @@ export const useTaskStore = create<TaskState>((set, get) => ({
     if (error) throw error;
 
     set(() => ({ tasks: [...tasks, ...data] }));
+    getTasks();
+
+    return data;
+  },
+
+  //! DELETE TASK
+  async deleteTask(taskId) {
+    const { getTasks } = get();
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    const { error, data } = await supabase
+      .from("tasks")
+      .delete()
+      .eq("userId", user?.id)
+      .eq("id", taskId)
+      .select();
+
+    if (error) throw error;
+
+    set((state) => ({
+      tasks: state.tasks.filter((task) => task.id !== taskId),
+    }));
     getTasks();
 
     return data;

@@ -1,5 +1,10 @@
+import { useStore } from "zustand";
+
 //* COMPONENT *//
 import { Button } from "../";
+
+//* STORE *//
+import { useTaskStore } from "../../store";
 
 //* INTERFACES *//
 import { ITask } from "../../intefaces";
@@ -9,7 +14,9 @@ interface Props {
 }
 
 export const TaskCard: React.FC<Props> = ({ task }) => {
-  const handleDelete = () => alert("Eliminar");
+  const { deleteTask } = useStore(useTaskStore);
+
+  const handleDelete = () => deleteTask(task.id);
   const handleToggle = () => alert("Toggle");
 
   return (
