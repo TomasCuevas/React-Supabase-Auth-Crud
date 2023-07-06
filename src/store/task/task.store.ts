@@ -11,6 +11,7 @@ interface TaskState {
   isLoadingTasks: boolean;
   getTasks(done?: boolean): Promise<void>;
   createTask(taskName: string): Promise<ITask[]>;
+  updateTask(taskId: number, updateField: Partial<ITask>): Promise<ITask[]>;
   deleteTask(taskId: number): Promise<ITask[]>;
 }
 
@@ -54,6 +55,34 @@ export const useTaskStore = create<TaskState>((set, get) => ({
     if (error) throw error;
 
     set(() => ({ tasks: [...tasks, ...data] }));
+    getTasks();
+
+    return data;
+  },
+
+  //! UPDATE TASK
+  async updateTask(taskId, updateField) {
+    const { getTasks } = get();
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    const { error, data } = await supabase
+      .from("tasks")
+      .update(updateField)
+      .eq("userId", user?.id)
+      .eq("id", taskId)
+      .select();
+
+    if (error) throw error;
+
+    set((state) => ({
+      tasks: state.tasks.map((task) => {
+        if (task.id === taskId) task = data[0];
+        return task;
+      }),
+    }));
     getTasks();
 
     return data;

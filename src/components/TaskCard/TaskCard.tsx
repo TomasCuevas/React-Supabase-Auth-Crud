@@ -14,10 +14,10 @@ interface Props {
 }
 
 export const TaskCard: React.FC<Props> = ({ task }) => {
-  const { deleteTask } = useStore(useTaskStore);
+  const { updateTask, deleteTask } = useStore(useTaskStore);
 
   const handleDelete = () => deleteTask(task.id);
-  const handleToggle = () => alert("Toggle");
+  const handleToggle = () => updateTask(task.id, { done: !task.done });
 
   return (
     <li>

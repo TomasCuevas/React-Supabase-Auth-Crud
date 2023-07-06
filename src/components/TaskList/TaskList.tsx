@@ -11,7 +11,7 @@ export const TaskList: React.FC = () => {
   const { tasks, getTasks, isLoadingTasks } = useStore(useTaskStore);
 
   useEffect(() => {
-    getTasks();
+    getTasks(true);
   }, []);
 
   return (
