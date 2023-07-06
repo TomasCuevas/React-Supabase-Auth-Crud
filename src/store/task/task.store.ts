@@ -3,18 +3,24 @@ import { create } from "zustand";
 //* SUPABASE CLIENT *//
 import { supabase } from "../../supabase";
 
-//* STORE INTERFACE *//
+//* STORE INTERFACES *//
+import { ITask } from "../../intefaces";
+
 interface TaskState {
-  tasks: any[];
+  tasks: ITask[];
+  isLoadingTasks: boolean;
   getTasks(done?: boolean): void;
   createTask(taskName: string): void;
 }
 
 export const useTaskStore = create<TaskState>((set, get) => ({
   tasks: [],
+  isLoadingTasks: true,
 
   //! GET TASKS
   async getTasks(done = false) {
+    set(() => ({ isLoadingTasks: true }));
+
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -27,7 +33,7 @@ export const useTaskStore = create<TaskState>((set, get) => ({
       .order("id", { ascending: true });
 
     if (error) throw error;
-    set(() => ({ tasks: data }));
+    set(() => ({ tasks: data, isLoadingTasks: false }));
   },
 
   //! CREATE TASK

@@ -35,7 +35,7 @@ export const TaskForm: React.FC = () => {
         type="text"
         value={formik.values.task}
       />
-      <Button
+      <Button.Blue
         type="submit"
         text="Crear tarea"
         loading={formik.isSubmitting}

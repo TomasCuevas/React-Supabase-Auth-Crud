@@ -8,7 +8,7 @@ export const HomePage: React.FC = () => {
   return (
     <div className="flex flex-col gap-10">
       <div className="ml-auto">
-        <Button
+        <Button.Alternative
           type="button"
           text="Cerrar Sesión"
           onClick={() => supabase.auth.signOut()}

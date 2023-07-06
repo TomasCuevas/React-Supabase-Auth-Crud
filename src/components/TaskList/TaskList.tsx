@@ -1,11 +1,14 @@
 import { useEffect } from "react";
 import { useStore } from "zustand";
 
+//* COMPONENT *//
+import { Loader, TaskCard } from "../";
+
 //* STORE *//
 import { useTaskStore } from "../../store";
 
 export const TaskList: React.FC = () => {
-  const { tasks, getTasks } = useStore(useTaskStore);
+  const { tasks, getTasks, isLoadingTasks } = useStore(useTaskStore);
 
   useEffect(() => {
     getTasks();
@@ -14,13 +17,13 @@ export const TaskList: React.FC = () => {
   return (
     <ul className="my-5 flex flex-col gap-3">
       {tasks.map((task) => (
-        <li key={task.id}>
-          <div className="text-white flex gap-5">
-            <span>{task.name}</span>
-            {JSON.stringify(task.done)}
-          </div>
-        </li>
+        <TaskCard key={task.id} task={task} />
       ))}
+      {isLoadingTasks && (
+        <div className="w-full justify-center flex mt-5">
+          <Loader />
+        </div>
+      )}
     </ul>
   );
 };
